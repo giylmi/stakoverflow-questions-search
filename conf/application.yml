@@ -1,0 +1,25 @@
+check: WORKS
+
+stackoverflow:
+  connectTimeout: 40
+  readTimeout: 10
+
+server:
+  type: simple
+  rootPath: /api/*
+  applicationContextPath: /
+
+logging:
+
+  # The default level of all loggers. Can be OFF, ERROR, WARN, INFO, DEBUG, TRACE, or ALL.
+  level: INFO
+
+  # Logger-specific levels.
+  loggers:
+
+    # Sets the level for 'com.example.piano' to DEBUG.
+    com.example.piano: DEBUG
+
+  appenders:
+      - type: console
+        threshold: ALL
