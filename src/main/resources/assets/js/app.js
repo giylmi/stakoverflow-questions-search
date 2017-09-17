@@ -15,6 +15,7 @@ function escape(s) {
 var QuestionForm = React.createClass({
     getInitialState: function () {
         return {
+            intitle: '',
             page: 0
         };
     },
@@ -25,7 +26,8 @@ var QuestionForm = React.createClass({
                     <form className="affix">
                         <div className="form-group">
                             <label htmlFor="questionInput">Search questions</label>
-                            <input type="text" className="form-control" id="questionInput"
+                            <input onChange={this.intitleChange}
+                                type="text" className="form-control" id="questionInput"
                                    aria-describedby="questionSearchHelp"
                                    ref="intitle"
                                    placeholder="Title"/>
@@ -40,17 +42,18 @@ var QuestionForm = React.createClass({
                                 <option value="relevation">Relevation</option>
                             </select>
                         </div>
-                        <button onClick={this.load} type="button" className="btn btn-primary">Search</button>
+                        <button onClick={this.load} type="button"
+                                className={'btn btn-primary ' + ((this.state.intitle.length == 0) ? 'disabled' : '')} disabled={this.state.intitle.length == 0}
+                        >Search</button>
                     </form>
                 </div>
             </div>
         );
     },
     search: function (cb) {
-        var intitle = ReactDOM.findDOMNode(this.refs.intitle).value,
-            sort=ReactDOM.findDOMNode(this.refs.sort).value;
+        var sort=ReactDOM.findDOMNode(this.refs.sort).value;
 
-        axios.get(`/api/questions/search?intitle=${intitle}&page=${this.state.page}&sort=${sort}`)
+        axios.get(`/api/questions/search?intitle=${this.state.intitle}&page=${this.state.page}&sort=${sort}`)
             .then(res => {
                 const questions = res.data.questions;
                 cb(questions, res.data.hasMore);
@@ -64,6 +67,9 @@ var QuestionForm = React.createClass({
     loadMore: function () {
         this.setState({page: ++this.state.page});
         this.search(this.props.loadedMoreCb);
+    },
+    intitleChange: function() {
+        this.setState({intitle: ReactDOM.findDOMNode(this.refs.intitle).value});
     }
 });
 
