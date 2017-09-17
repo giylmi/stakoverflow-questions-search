@@ -16,8 +16,8 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     public QuestionSearchResults search(String intitle, String sort, Long page) {
-        if (intitle == null) {
-            intitle = "";
+        if (intitle == null || intitle.isEmpty()) {
+            throw new PianoIllegalArgumentException("intitle", "intitle is null or empty");
         }
         if (sort == null) {
             sort = "activity";

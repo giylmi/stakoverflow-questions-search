@@ -3,6 +3,7 @@ package com.example.piano;
 import com.example.piano.client.StackOverflowClient;
 import com.example.piano.dao.StackOverflowDao;
 import com.example.piano.health.PropsAvailableHealthCheck;
+import com.example.piano.providers.PianoIllegalArgumentExceptionMapper;
 import com.example.piano.resources.QuestionResource;
 import com.example.piano.service.QuestionServiceImpl;
 import io.dropwizard.Application;
@@ -39,6 +40,7 @@ public class PianoTestApplication extends Application<PianoTestConfiguration> {
         environment.healthChecks().register("propertiesCheck",
                 new PropsAvailableHealthCheck(pianoTestConfiguration.getCheck()));
 
+        environment.jersey().register(new PianoIllegalArgumentExceptionMapper());
         environment.jersey().register(resource);
     }
 }
